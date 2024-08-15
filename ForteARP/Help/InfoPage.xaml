@@ -1,0 +1,49 @@
+﻿<Page x:Class="ForteARP.Help.InfoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ForteARP.Help"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800" Background="White"
+      Title="InfoPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1" Text="ARG (Archive Realtime Graphic) User Guide "  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+
+        <StackPanel Grid.Row="2"  Margin="20,10,20,0"  Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <TextBlock FontSize="14" Height="30" TextTrimming="WordEllipsis" FontWeight="Medium">Modules Selection of the application.<LineBreak/></TextBlock>
+
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis" FontWeight="Medium">Archive and Realtime Options.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">1. Archive Bale, Lot and Unit => Display Bales, Lot and Unit Archive Data<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">2. Realtime Data => Display Bales data in Realtime, with animation of bale movement from station to station.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">3. Realtime Graph => Display Graph of bales in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">4. Realtime Dual Graphs => Display Bale Moisture and bale weight in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="40" TextTrimming="WordEllipsis">5. Variables => Display selectbale Bale Data in Big Display boxes in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis" FontWeight="Medium">Wet Layer Options. (Wetlayer system 2760WL)<LineBreak/></TextBlock>
+
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">1. Wet Layer Archives/Realtime => Display Wet Layer Archive data and also in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="40" TextTrimming="WordEllipsis">2. Wet Layer  Layers Trend => Display average of selectable numbers of wet layer for layer offset adjustment.<LineBreak/></TextBlock>
+
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis" FontWeight="Medium">Drop Options. (8760 System with Bale Drop tracking)<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">1. Drop Count Hi to Low => Bales in drop order increment or decrement .<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">2. Drop Profile    => Display Graph of Most recent number of drops by Drop Number in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">3. Drop Graph      => Display Trend view of Each Bale Position of Moisture or Weight or Forte Number within a drop.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">4. Drop Position   => Display profile of Moisture or Weight or Forte Number by bale position in Realtime.<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="40" TextTrimming="WordEllipsis">5. Remote Profile  => Display selectable data (Moisture or Weight or Forte Number) of each drop in Realtime.<LineBreak/></TextBlock>
+
+            <TextBlock FontSize="14" Height="23" TextTrimming="WordEllipsis">Histrogram => Display Selectable number of bales for Histrogram of Forte Index (ForteNumber/Weight)<LineBreak/></TextBlock>
+            <TextBlock FontSize="14" Height="25" TextTrimming="WordEllipsis">ProductEstimate => Display Product estimation only in Espanol<LineBreak/></TextBlock>
+
+        </StackPanel>
+
+
+    </Grid>
+</Page>

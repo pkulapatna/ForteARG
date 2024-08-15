@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FDE527DF-66DD-407E-B1A0-33D27A36B730}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ForteARP</RootNamespace>
+    <AssemblyName>ForteARG</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SINEWAVE.ICO</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>2CE44EE9879BFA21804EBB0D131CB085EFE85EBD</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ForteARP_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ButtonClass">
+      <HintPath>..\..\..\..\LibraryResource\UserControls\ButtonClass\bin\Release\ButtonClass.dll</HintPath>
+    </Reference>
+    <Reference Include="CircularProgressBar, Version=2.8.0.16, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\CircularProgressBar.2.8.0.16\lib\net40\CircularProgressBar.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.7\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.1.4.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.1.4\lib\net462\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.9.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.9.0\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Unity.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Unity.8.1.97\lib\net47\Prism.Unity.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="QurtzLibrary">
+      <HintPath>..\..\..\..\LibraryResource\QurtzSchedule\QurtzLibrary\bin\Release\QurtzLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.6.0.0-preview.4.21253.7\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlClient, Version=4.6.1.5, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.8.5\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.7.0.0-preview.2.22152.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LibraryResource\ClsLogin\bin\Release\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TableDependency.SqlClient, Version=8.5.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SqlTableDependency.8.5.8\lib\net451\TableDependency.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Abstractions.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.11.11\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
+    </Reference>
+    <Reference Include="WpfArchive.Windows.Theme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ForteDataVisualization\ForteVisualData\CustomReference\WpfArchive.Windows.Theme.dll</HintPath>
+    </Reference>
+    <Reference Include="WpfLanguageResource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\LibraryResource\WpfLanguageResource\bin\Release\WpfLanguageResource.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPFToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFToolkit.VisualStudio.Design, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPFToolkit.VisualStudio.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=4.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.5.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="ApplicationService.cs" />
+    <Compile Include="Module Charts\ChartData.cs" />
+    <Compile Include="Help\InfoPage.xaml.cs">
+      <DependentUpon>InfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\InformWin.xaml.cs">
+      <DependentUpon>InformWin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ParamPage.xaml.cs">
+      <DependentUpon>ParamPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\SettingsWin.xaml.cs">
+      <DependentUpon>SettingsWin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\SqlInfoWin.xaml.cs">
+      <DependentUpon>SqlInfoWin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\SqlPage.xaml.cs">
+      <DependentUpon>SqlPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Archives\Model\BaleArchivesModel.cs" />
+    <Compile Include="Module Archives\ViewModels\BaleArchivesViewModel.cs" />
+    <Compile Include="Module Charts\ClsChartColor.cs" />
+    <Compile Include="Module Charts\ClsChartData.cs" />
+    <Compile Include="Module Charts\Views\Graph01.xaml.cs">
+      <DependentUpon>Graph01.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Charts\Views\Graph02.xaml.cs">
+      <DependentUpon>Graph02.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Block.xaml.cs">
+      <DependentUpon>Block.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LoadingAnimation.xaml.cs">
+      <DependentUpon>LoadingAnimation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingWIndow.xaml.cs">
+      <DependentUpon>LoadingWIndow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Charts\Model\ClsGaph01Model.cs" />
+    <Compile Include="Module Archives\Views\BaleArchives.xaml.cs">
+      <DependentUpon>BaleArchives.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Combine\Model\CombineModel.cs" />
+    <Compile Include="Module Combine\ViewModels\CombineViewModel.cs" />
+    <Compile Include="Module Combine\ViewModels\ComboSetupViewModel.cs" />
+    <Compile Include="Module Combine\Views\CombineView.xaml.cs">
+      <DependentUpon>CombineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Combine\Views\ComboSetupView.xaml.cs">
+      <DependentUpon>ComboSetupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module DropOption\Model\DropModel.cs" />
+    <Compile Include="Module DropOption\ViewModels\DropGraphViewModel.cs" />
+    <Compile Include="Module DropOption\ViewModels\DropPositionViewModel.cs" />
+    <Compile Include="Module DropOption\ViewModels\DropProfileViewModel.cs" />
+    <Compile Include="Module DropOption\ViewModels\RemoteProfileViewModel.cs" />
+    <Compile Include="Module DropOption\Views\DropGraph.xaml.cs">
+      <DependentUpon>DropGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module DropOption\Views\DropPosition.xaml.cs">
+      <DependentUpon>DropPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module DropOption\Views\DropProfile.xaml.cs">
+      <DependentUpon>DropProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module DropOption\Views\RemoteProfile.xaml.cs">
+      <DependentUpon>RemoteProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module FieldsSelect\Model\SelectItemModel.cs" />
+    <Compile Include="Module FieldsSelect\ViewModels\SelectItemsViewModel.cs" />
+    <Compile Include="Module FieldsSelect\Views\SelectItems.xaml.cs">
+      <DependentUpon>SelectItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Graphs\Model\DualGraphModel.cs" />
+    <Compile Include="Module Graphs\Model\RealTimeGraphModel.cs" />
+    <Compile Include="Module Graphs\ViewModels\DualGraphViewModel.cs" />
+    <Compile Include="Module Graphs\ViewModels\RealTimeGraphViewModel.cs" />
+    <Compile Include="Module Graphs\ViewModels\RtGrpSettingViewModel.cs" />
+    <Compile Include="Module Graphs\Views\DualGraph.xaml.cs">
+      <DependentUpon>DualGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Graphs\Views\RealTimeGraph.xaml.cs">
+      <DependentUpon>RealTimeGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Graphs\Views\RtGrpSettingView.xaml.cs">
+      <DependentUpon>RtGrpSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Histrogram\Model\HistrogramModel.cs" />
+    <Compile Include="Module Histrogram\ViewModels\HistrogramViewModel.cs" />
+    <Compile Include="Module Histrogram\Views\HistroGram.xaml.cs">
+      <DependentUpon>HistroGram.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module ProdEstimate\Model\ClsProdEstModel.cs" />
+    <Compile Include="Module ProdEstimate\ViewModels\ProductEstViewModel.cs" />
+    <Compile Include="Module ProdEstimate\Views\ProductionEstimates.xaml.cs">
+      <DependentUpon>ProductionEstimates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module RealTime\Model\RealTimeModel.cs" />
+    <Compile Include="Module RealTime\ViewModels\RealTimeViewModel.cs" />
+    <Compile Include="Module RealTime\ViewModels\VariableViewModel.cs" />
+    <Compile Include="Module RealTime\Views\RealTime.xaml.cs">
+      <DependentUpon>RealTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module RealTime\Views\Variables.xaml.cs">
+      <DependentUpon>Variables.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module WetLayer\Model\WetLayerModel.cs" />
+    <Compile Include="Module WetLayer\ViewModels\WetLayersTrendViewModel.cs" />
+    <Compile Include="Module WetLayer\ViewModels\WetLayerViewModel.cs" />
+    <Compile Include="Module WetLayer\Views\WetLayer.xaml.cs">
+      <DependentUpon>WetLayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module WetLayer\Views\WetLayersTrend.xaml.cs">
+      <DependentUpon>WetLayersTrend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Setup\Views\SetupModule.xaml.cs">
+      <DependentUpon>SetupModule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module SqlBackup\Views\SqlBackup.xaml.cs">
+      <DependentUpon>SqlBackup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Module Reports\ViewModels\CSVReportViewModel.cs" />
+    <Compile Include="Module Reports\Views\CSVReport.xaml.cs">
+      <DependentUpon>CSVReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="Module Charts\ViewModels\Graph01ViewModel.cs" />
+    <Compile Include="Module Charts\ViewModels\Graph02ViewModel.cs" />
+    <Compile Include="ViewModels\LoadAnimationViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Module Setup\ViewModels\SetupViewModel.cs" />
+    <Page Include="Module Charts\Views\Graph01.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Charts\Views\Graph02.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Block.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\LoadingAnimation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\InfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\InformWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\ParamPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\SettingsWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\SqlInfoWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help\SqlPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoadingWIndow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Module Archives\Views\BaleArchives.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Combine\Views\CombineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Combine\Views\ComboSetupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module DropOption\Views\DropGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module DropOption\Views\DropPosition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module DropOption\Views\DropProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module DropOption\Views\RemoteProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module FieldsSelect\Views\SelectItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Graphs\Views\DualGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Graphs\Views\RealTimeGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Graphs\Views\RtGrpSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Histrogram\Views\HistroGram.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module ProdEstimate\Views\ProductionEstimates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module RealTime\Views\RealTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module RealTime\Views\Variables.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module WetLayer\Views\WetLayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module WetLayer\Views\WetLayersTrend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Setup\Views\SetupModule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module SqlBackup\Views\SqlBackup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Module Reports\Views\CSVReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modules\IModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="ForteARP_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CLOCK02.ICO" />
+    <Resource Include="Images\Desk Top Icon.ICO" />
+    <Resource Include="Images\Desktop.png" />
+    <Resource Include="Images\Forte Logotst.bmp" />
+    <Resource Include="Images\MOON02.ICO" />
+    <Resource Include="Images\NET01.ICO" />
+    <Resource Include="Images\SINEWAVE.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\a.jpg" />
+    <Resource Include="Images\ARW03DN.ICO" />
+    <Resource Include="Images\ARW03UP.ICO" />
+    <Resource Include="Images\ARW04DN.ICO" />
+    <Resource Include="Images\ARW04UP.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\Junk1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Module Reports\Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\Sandbox.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\setupIcon2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\removed from Realtimegraph.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sinewave.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MOON02.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SINEWAVE.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\TextFile1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\TextSpanish.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sandbox\SqlCode.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ForteARP.Services\ForteArp.Services\ForteArg.Services.csproj">
+      <Project>{8f484508-fa16-4b5d-a7a4-d264299769d1}</Project>
+      <Name>ForteArg.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CustomReference\System.Windows.Interactivity.dll" />
+    <Content Include="CustomReference\WpfArchive.Windows.Theme.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
+</Project>

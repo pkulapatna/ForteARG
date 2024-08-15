@@ -1,0 +1,437 @@
+﻿
+        internal DataTable GetPopupDataTable(int iSample, System.Collections.ObjectModel.ObservableCollection<string> selectedHdrList)
+        {
+            iSampleCount = iSample;
+            string m_strQueryString = string.Empty;
+            DataTable PopupDataTable = null;
+
+            try
+            {
+
+                if (selectedHdrList.Contains("ADWeight"))
+                    selectedHdrList.Remove("ADWeight");
+
+                //if there is wetlayer in the system and %CV is in the selectedHdrList
+                if (selectedHdrList.Contains("%CV"))
+                {
+                    m_strQueryString = BuildPopupQueryString(selectedHdrList, iSample, true);
+                    DataTable Mytable = SqlConfigModel.GetForteRtWlTable(m_strQueryString);
+                    PopupDataTable = ProcessPopupTable(Mytable);
+                }
+                else
+                {
+                    m_strQueryString = BuildPopupQueryString(selectedHdrList, iSample, false);
+                    PopupDataTable = SqlConfigModel.GetForteDataTable(m_strQueryString);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetPopupDataTable " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.APPREALTIMEGRAPH, ex.Message);
+            }
+            return PopupDataTable;
+        }
+
+
+        /// <summary>
+        /// calculate %CV from all layers, put in %CV column 
+        /// </summary>
+        /// <param name="mytable"></param>
+        /// <returns></returns>
+        private DataTable ProcessPopupTable(DataTable mytable)
+        {
+            DataTable temptable = new DataTable();
+            int iRowsCount = mytable.Rows.Count;
+            List<double> fLayerVal;
+
+            try
+            {
+                if (iRowsCount > 0)
+                {
+                    int iLayerset = 0;
+                    CALC_RESULTS StructLast = new CALC_RESULTS();
+                    fLayerVal = new List<double>();
+                    mytable.Columns.Add("%CV", typeof(Double)).SetOrdinal(mytable.Columns["layer30"].Ordinal + 1);
+
+                    for (int y = 0; y < iRowsCount; y++)
+                    {
+                        for (int i = 1; i < iLayerCount + 1; i++)
+                        {
+                            if (mytable.Rows[y]["layer" + i].ToString() != string.Empty)
+                            {
+                                iLayerset += 1;
+                                fLayerVal.Add(ConvToMR(mytable.Rows[y].Field<Single>("layer" + i)));
+                                //fLayerVal.Add(ConvToMR(Convert.ToDouble(mytable.Rows[y]["layer" + i].ToString())));
+                            }
+                        }
+                        CalCVMinMax(fLayerVal, iLayerset, out StructLast);
+                        mytable.Rows[y]["%CV"] = StructLast.dDeviation.ToString("#0.00");
+                        fLayerVal.Clear();
+                    }
+                }
+
+                for (int i = 1; i < iLayerCount + 1; i++)
+                {
+                    if (mytable.Columns.Contains("layer" + i.ToString()))
+                        mytable.Columns.Remove("layer" + i.ToString());
+                }
+
+                temptable = mytable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in ProcessPopupTable " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.APPREALTIMEGRAPH, ex.Message);
+            }
+            return temptable;
+        }
+
+
+        private string BuildPopupQueryString(System.Collections.ObjectModel.ObservableCollection<string> hdrDropDownList, int iSample, bool bWLpresent)
+        {
+            string strQ = string.Empty;
+            string strList = string.Empty;
+            string strWlq = string.Empty;
+            char charsToTrim = ',';
+
+            m_CurrentBaleTable = SqlConfigModel.GetCurrentBaleTable(); //if month changes
+
+            if (ClassCommon.WLOptions)
+            {
+                string m_CurrentWlTable = SqlConfigModel.GetCurrenWLTable();
+
+                if (hdrDropDownList.Count > 0)
+                {
+                    foreach (var Item in hdrDropDownList)
+                    {
+                        if (Item == "%CV")
+                        {
+                            //strList += m_CurrentWlTable + ".Deviation,"; //Layer1
+                            for (int i = 1; i < iLayerCount + 1; i++)
+                            {
+                                strList += m_CurrentWlTable + ".Layer" + i.ToString() + ","; //Layer1
+                            }
+                        }
+                        else
+                            strList += m_CurrentBaleTable + "." + Item + ",";
+                    }
+
+                    strQ = "SELECT TOP " + iSample.ToString() + " " + strList.Trim(charsToTrim)
+                    + ",[index] FROM [ForteData].[dbo].[" + m_CurrentBaleTable + "] with (NOLOCK) INNER JOIN [ForteLayer].[dbo].["
+                    + m_CurrentWlTable + "] ON " + m_CurrentBaleTable + ".TimeStart = " + m_CurrentWlTable + ".ReadTime ORDER BY [TimeStart] DESC";
+                }
+            }
+            else
+            {
+                if (hdrDropDownList.Count > 0)
+                {
+                    foreach (var Item in hdrDropDownList)
+                    {
+                        strList += m_CurrentBaleTable + "." + Item + ",";
+                    }
+
+                    strQ = "SELECT TOP " + iSample.ToString() + " " + strList.Trim(charsToTrim)
+                           + ",[index] FROM dbo.[" + m_CurrentBaleTable + "] with (NOLOCK) ORDER BY [TimeStart] DESC";
+
+                }
+                //Console.WriteLine("------strQ= " + strQ);
+            }
+            return strQ;
+        }
+
+         /// <summary>
+        /// Get new data from SQL table here!
+        /// </summary>
+        internal DataTable GetNewGraphData(int iSample)
+        {
+            iSampleCount = iSample;
+            string m_strQueryString = string.Empty;
+            DataTable RealTimeDataTable = new DataTable();
+
+            try
+            {
+                m_strQueryString = SqlConfigModel.BuildQueryString(iSampleCount);
+                RealTimeDataTable = SqlConfigModel.GetForteDataTable(m_strQueryString);
+
+                DataColumn NewCol = RealTimeDataTable.Columns.Add("ADWeight", typeof(Single));
+                for (int i = 0; i < RealTimeDataTable.Rows.Count; i++)
+                {
+                    if ((RealTimeDataTable.Rows[i]["BDWeight"] != null) && (RealTimeDataTable.Rows[i].Field<Single>("BDWeight") > 0))
+                        RealTimeDataTable.Rows[i]["ADWeight"] = RealTimeDataTable.Rows[i].Field<Single>("BDWeight") / 0.9;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetNewGraphData " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.APPREALTIMEGRAPH, ex.Message);
+            }
+            return RealTimeDataTable;
+        }
+
+         /// <summary>
+        /// Get new data from SQL table here!
+        /// </summary>
+        internal DataTable GetNewGraphData()
+        {
+            string m_strQueryString = string.Empty;
+            DataTable RealTimeDataTable = null;
+
+            try
+            {
+                m_strQueryString = BuildQueryString();
+                RealTimeDataTable = SqlConfigModel.GetForteDataTable(m_strQueryString);
+                iNewIndexNum = SqlConfigModel.iNewIndexNumber;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetNewGraphData " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.APPDUALGRAPH, ex.Message);
+            }
+            return RealTimeDataTable;
+        }
+
+         public DataTable GetForteDataTable(string strQuery)
+        {
+            DataTable mytable = new DataTable();
+            mytable.Clear();
+            DataColumnCollection columns = mytable.Columns;
+
+            try
+            {
+                using (var sqlConnection = new SqlConnection(m_ConString))
+                {
+                    using (var adapter = new SqlDataAdapter(strQuery, sqlConnection))
+                    {
+                        adapter.Fill(mytable);
+                    }
+                }
+
+                if ( mytable.Rows.Count > 0  & columns.Contains("index"))
+                {
+                    iNewIndexNumber = mytable.Rows[0].Field<int>("index");   
+                    mytable.Columns.Remove("index");
+                }
+           
+                DataRow[] rows = mytable.Select();
+
+                for (int i = 0; i < rows.Length; i++)
+                {
+                    switch (Settings.Default.MoistureUnit)
+                    {
+                        case 0: // %MC == moisture from Sql database
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = rows[i]["Moisture"];
+                            break;
+
+                        case 1: // %MR  = Moisture / ( 1- Moisture / 100)
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = rows[i].Field<Single>("Moisture") / (1 - rows[i].Field<Single>("Moisture") / 100);
+                            break;
+
+                        case 2: // %AD = (100 - moisture) / 0.9
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = (100 - rows[i].Field<Single>("Moisture")) / 0.9;
+                            break;
+
+                        case 3: // %BD  = 100 - moisture
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = 100 - rows[i].Field<Single>("Moisture");
+                            break;
+                    }
+                    if (Settings.Default.WeightUnit == 1) //English Unit lb
+                    {
+                        if ((columns.Contains("Weight")) & (rows[i]["Weight"] != null))
+                            rows[i]["Weight"] = rows[i].Field<Single>("Weight") * 2.20462; //Lb
+
+                        if (columns.Contains("BDWeight"))
+                        {
+                            if ((rows[i]["BDWeight"] != null))
+                                rows[i]["BDWeight"] = (rows[i].Field<Single>("BDWeight") * 2.20462); //Lb.
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetForteDataTable -> " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.DBSQL, "GetForteDatatable " + ex.Message);
+            }
+            return mytable;
+        }
+
+
+        public DateTime GetcurrentWLReadTime()
+        {
+            string strTime = string.Empty;
+            string strquery = "SELECT top 1 [ReadTime] From dbo.[" + GetCurrenWLTable() + "] ORDER by ReadTime DESC";
+            //string strquery = "SELECT top 1 [ReadTime] From dbo.[FValueReadingsDec17] ORDER by ReadTime DESC";
+            DateTime oDate= DateTime.Now;
+
+            try
+            {
+
+                using (var sqlConnection = new SqlConnection(m_WLConStr))
+                {
+                    if (sqlConnection != null) sqlConnection.Open();
+                    using (var command = new SqlCommand(strquery, sqlConnection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                                while (reader.Read())
+                                {
+                                    if (reader != null)
+                                        strTime = reader[0].ToString();
+                                }
+                        }
+                    }
+                    if (sqlConnection != null) sqlConnection.Close();
+                    oDate = Convert.ToDateTime(strTime);
+                }
+                return oDate;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR in GetcurrentWLReadTime " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.DBSQL, "GetcurrentWLReadTime " + ex.Message);
+            }
+            return oDate;
+        }
+
+        
+        internal DataTable GetBaleDataTable(string strClause)
+        {
+            DataTable mytable = new DataTable();
+            mytable.Clear();
+            DataColumnCollection columns = mytable.Columns;
+
+            try
+            {
+                using (var sqlConnection = new SqlConnection(m_ConString))
+                {
+                    using (var adapter = new SqlDataAdapter(strClause, sqlConnection))
+                    {
+                        adapter.Fill(mytable);
+                    }
+                }
+
+                if (columns.Contains("Moisture"))
+                {
+                    DataRow[] rows = mytable.Select();
+                    for (int i = 0; i < rows.Length; i++)
+                    {
+                        switch (Settings.Default.MoistureUnit)
+                        {
+                            case 0: // %MC == moisture from Sql database
+                                if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                    rows[i]["Moisture"] = rows[i]["Moisture"];
+                                break;
+
+                            case 1: // %MR  = Moisture / ( 1- Moisture / 100)
+                                if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                    rows[i]["Moisture"] = rows[i].Field<Single>("Moisture") / (1 - rows[i].Field<Single>("Moisture") / 100);
+                                break;
+
+                            case 2: // %AD = (100 - moisture) / 0.9
+                                if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                    rows[i]["Moisture"] = (100 - rows[i].Field<Single>("Moisture")) / 0.9;
+                                break;
+
+                            case 3: // %BD  = 100 - moisture
+                                if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                    rows[i]["Moisture"] = 100 - rows[i].Field<Single>("Moisture");
+                                break;
+                        }
+
+                        if (Settings.Default.WeightUnit == 1) //English Unit lb
+                        {
+                            if ((columns.Contains("Weight")) & (rows[i]["Weight"] != null))
+                                rows[i]["Weight"] = (rows[i].Field<Single>("Weight") * 2.20462); //Lb.
+
+                            if (columns.Contains("BDWeight"))
+                            {
+                                if((rows[i]["BDWeight"] != null))
+                                    rows[i]["BDWeight"] = (rows[i].Field<Single>("BDWeight") * 2.20462); //Lb.
+                            }
+                        }
+                    }
+                }         
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetBaleDataTable " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.DBSQL, "GetBaleDatatable "+ ex.Message);
+            }
+            return mytable;
+        }
+
+        /// <summary>
+        /// Get Data from Realtime and Wet
+        /// </summary>
+        /// <param name="m_strQueryString"></param>
+        /// <returns></returns>
+        internal DataTable GetForteRtWlTable(string strQuery)
+        {
+            DataTable mytable = new DataTable();
+            mytable.Clear();
+
+            try
+            {
+                using (var sqlConnection = new SqlConnection(m_WLConStr))
+                {
+                    using (var adapter = new SqlDataAdapter(strQuery, sqlConnection))
+                    {
+                        adapter.Fill(mytable);
+                    }
+                }
+
+                DataRow[] rows = mytable.Select();
+                DataColumnCollection columns = mytable.Columns;
+
+                for (int i = 0; i < rows.Length; i++)
+                {
+                    switch (Settings.Default.MoistureUnit)
+                    {
+                        case 0: // %MC == moisture from Sql database
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = rows[i]["Moisture"];
+                            break;
+
+                        case 1: // %MR  = Moisture / ( 1- Moisture / 100)
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = rows[i].Field<Single>("Moisture") / (1 - rows[i].Field<Single>("Moisture") / 100);
+                       
+                            break;
+
+                        case 2: // %AD = (100 - moisture) / 0.9
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = (100 - rows[i].Field<Single>("Moisture")) / 0.9;
+                            
+                            break;
+
+                        case 3: // %BD  = 100 - moisture
+                            if ((columns.Contains("Moisture")) & (rows[i]["Moisture"] != null))
+                                rows[i]["Moisture"] = 100 - rows[i].Field<Single>("Moisture");
+                            
+                            break;
+                    }
+                    if (Settings.Default.WeightUnit == 1) //English Unit lb
+                    {
+                        if ((columns.Contains("Weight")) & (rows[i]["Weight"] != null))
+                            rows[i]["Weight"] = rows[i].Field<Single>("Weight") * 2.20462; //Lb
+                        if (columns.Contains("BDWeight"))
+                        {
+                            if ((rows[i]["BDWeight"] != null))
+                                rows[i]["BDWeight"] = (rows[i].Field<Single>("BDWeight") * 2.20462); //Lb.
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in GetForteRtWlTable -> " + ex.Message);
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.DBSQL, "GetForteWLtable " + ex.Message);
+            }
+            return mytable;
+        }

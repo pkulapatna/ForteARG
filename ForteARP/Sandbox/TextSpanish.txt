@@ -1,0 +1,72 @@
+﻿
+
+Perfil de descenso en seco de
+
+
+Gráfico de
+
+Actualización del tiempo de escaneo
+
+Tiempo de Scan Detenido
+
+Tiempo real de Fardo
+
+Duración del escaneo
+
+StrScanDuration = "Duración del escaneo: " + Settings.Default.iScanRate.ToString() + " Segundos.";
+
+Actual de Peso
+
+UpdateInfo = "Estado : Tiempo de escaneo iniciado";
+"Estado : Tiempo de Scan Detenido"
+
+Location1 a la izquierda
+
+ubicación 1 a la izquierda
+
+"Más reciente - " + value + " - Fardo (ubicación 1 a la izquierda)";
+
+ //GraphTitle = "Most Recent - " + SampleSize.ToString() + " - consecutive drops by Drop Number  [ " + iBaleInDrop.ToString() + " Bales in each drop ]";
+                GraphTitle = SampleSize.ToString() + " Bajadas mas recientes ordenadas por número de bajada " + iBaleInDrop.ToString();
+
+"Estado : Tiempo de Scan Detenido";
+
+UpdateInfo = "Estado :Tiempo de Scan Comienzo";
+
+ UpdateStatus("Estado : nueva fardoarrive aparecer a : " + DateTime.Now.ToString() + " el descanso= " + span.ToString("c"));
+
+UpdateInfo = "Posicion de Fardo" + iBalePos.ToString() + " de "+ m_BalesinDrop.ToString();
+
+
+
+ID	ENGLISH	                                            SPANISH
+1	Setup	                                            Ajustes
+2	Archives	                                        Archivos
+3	RealTime	                                        TiempoReal
+4	RealTimeGraph	                                    Gráfico TiempoReal
+5	DualGraph	                                        Gráfico Dual
+6	Drop_Profile	                                    Perfil Bajada
+7	Drop_Position	                                    Posicion por Bajada
+8	Variables	                                        Variables
+9	Histogram	                                        Histograma
+
+10	Air Dry	                                            Seco
+11	Gross Weight	                                    Peso Bruto
+12	BD Weight	                                        Peso BD
+13	AD Weight	                                        Peso AD
+14	Forte	                                            Forte
+
+15	Drop Profile of- Air Dry - From …..	                Perfil de bajada de seco desde
+16	Most Recent-5-Consecutive drops by Drop Number	    5 Bajadas mas recientes ordenadas por número de bajada
+17	current bale pos	                                posicion actual de fardos
+18	moisture	                                        Humedad
+
+19	Status:                                             Scan Time Stop	Estado: Tiempo de Scan Detenido
+20	weight	                                            Peso
+21	Line	                                            Línea
+22	bale	                                            Fardo
+23	source	                                            Secador
+24	drop	                                            Bajada
+25	fields	                                            Campos
+26	stop	                                            Detener
+27	start	                                            Iniciar

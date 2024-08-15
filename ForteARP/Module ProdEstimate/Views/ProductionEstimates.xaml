@@ -1,0 +1,277 @@
+﻿<UserControl x:Class="ForteARP.Module_ProdEsitmate.Views.ProductionEstimates"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ForteARP.Module_ProdEsitmate.Views"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+              xmlns:MaterialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedPageICommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding ClosedPageICommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FFB5CBF1" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="1" Content="Production Estimates" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="28"/>
+
+
+        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="2">
+            <Grid ShowGridLines="True" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="2" Content="Real" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="0" Grid.Column="3" Content="Estimar" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="0" Grid.Column="4" Content="Total" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+
+                <Label Grid.Row="1" Grid.Column="1" Content="Turno 1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="Turno 1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="Turno 2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="Turno 3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="4" Grid.Column="1" Content="DIA" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+
+                <TextBox Grid.Row="1" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno1MC1}" FontSize="40"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno1MC1}" FontSize="40"/>
+                <TextBox Grid.Row="1" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono1MC1}" FontSize="40"/>
+
+                <TextBox Grid.Row="2" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno2MC1}" FontSize="40"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno2MC1}" FontSize="40"/>
+                <TextBox Grid.Row="2" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono2MC1}" FontSize="40"/>
+
+                <TextBox Grid.Row="3" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno3MC1}" FontSize="40"/>
+                <TextBox Grid.Row="3" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno3MC1}" FontSize="40"/>
+                <TextBox Grid.Row="3" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono3MC1}" FontSize="40"/>
+
+                <TextBox Grid.Row="4" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding DiaMC1}" FontSize="40"/>
+                <TextBox Grid.Row="4" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding EsMC1}" FontSize="40"/>
+                <TextBox Grid.Row="4" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding ToMC1}" FontSize="40"/>
+
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="3" Grid.Column="1" Background="AntiqueWhite">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="1" Content="Máquina 1" Grid.ColumnSpan="5" Background="#FFB5CBF1" FontSize="18" FontWeight="Medium"></Label>
+
+            <Label Grid.Row="1" Grid.Column="1" Content="Factor" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center" Visibility="Hidden"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="000.000" FontSize="24"  Background="white" BorderThickness="1" Visibility="Hidden"/>
+
+            <Label Grid.Row="1" Grid.Column="2" Content="Velocidad" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+            <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Velocidad1}" FontSize="24" Background="white" BorderThickness="1"/>
+
+            <Label Grid.Row="1" Grid.Column="3" Content="Peso Base" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+            <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding PesoBase1}" FontSize="24" Background="white" BorderThickness="1"/>
+
+            <Label Grid.Row="1" Grid.Column="4" Content="%AD" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+            <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding AirDry1}" FontSize="24" Background="white" BorderThickness="1"/>
+
+            <Label Grid.Row="1" Grid.Column="5" Content="Prod.Est." FontSize="18" FontWeight="Medium" HorizontalAlignment="Center" Visibility="Hidden"/>
+            <TextBox Grid.Row="3" Grid.Column="5" Text="000.000" FontSize="24" Background="white" BorderThickness="1" Visibility="Hidden"/>
+
+
+        </Grid>
+
+
+        <Border Grid.Row="1" Grid.Column="3" BorderBrush="Black" BorderThickness="2">
+            <Grid Background="White" ShowGridLines="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Label Grid.Row="0" Grid.Column="2" Content="Real" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="0" Grid.Column="3" Content="Estimar" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="0" Grid.Column="4" Content="Total" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+
+                <Label Grid.Row="1" Grid.Column="1" Content="Turno 1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="Turno 2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="Turno 3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+                <Label Grid.Row="4" Grid.Column="1" Content="DIA" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28"/>
+
+                <TextBox Grid.Row="1" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno1MC2}" FontSize="40"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno1MC2}" FontSize="40"/>
+                <TextBox Grid.Row="1" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono1MC2}" FontSize="40"/>
+
+                <TextBox Grid.Row="2" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno2MC2}" FontSize="40"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno2MC2}" FontSize="40"/>
+                <TextBox Grid.Row="2" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono2MC2}" FontSize="40"/>
+
+                <TextBox Grid.Row="3" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding RTno3MC2}" FontSize="40"/>
+                <TextBox Grid.Row="3" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding Esno3MC2}" FontSize="40"/>
+                <TextBox Grid.Row="3" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding Tono3MC2}" FontSize="40"/>
+
+                <TextBox Grid.Row="4" Grid.Column="2" Background="Transparent" BorderThickness="0" Text="{Binding DiaMC2}" FontSize="40"/>
+                <TextBox Grid.Row="4" Grid.Column="3" Background="Transparent" BorderThickness="0" Text="{Binding EsMC2}" FontSize="40"/>
+                <TextBox Grid.Row="4" Grid.Column="4" Background="Transparent" BorderThickness="0" Text="{Binding ToMC2}" FontSize="40"/>
+
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="3" Grid.Column="3" Background="AntiqueWhite">
+            <Grid Grid.Row="3" Grid.Column="1" Background="AntiqueWhite">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="1" Content="Máquina 2"  Grid.ColumnSpan="5" Background="#FFB5CBF1" FontSize="18" FontWeight="Medium"></Label>
+
+                <Label Grid.Row="1" Grid.Column="1" Content="Factor" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center" Visibility="Hidden"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="000.000" FontSize="24"  Background="white" BorderThickness="1" Visibility="Hidden"/>
+
+                <Label Grid.Row="1" Grid.Column="2" Content="Velocidad" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Velocidad2}" FontSize="24" Background="white" BorderThickness="1"/>
+
+                <Label Grid.Row="1" Grid.Column="3" Content="Peso Base" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding PesoBase2}" FontSize="24" Background="white" BorderThickness="1"/>
+
+                <Label Grid.Row="1" Grid.Column="4" Content="%AD" FontSize="18" FontWeight="Medium" HorizontalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding AirDry2}" FontSize="24" Background="white" BorderThickness="1"/>
+
+                <Label Grid.Row="1" Grid.Column="5" Content="Prod.Est." FontSize="18" FontWeight="Medium" HorizontalAlignment="Center" Visibility="Hidden"/>
+                <TextBox Grid.Row="3" Grid.Column="5" Text="000.000" FontSize="24" Background="white" BorderThickness="1" Visibility="Hidden"/>
+
+
+            </Grid>
+
+
+        </Grid>
+
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"  Background="White" BorderThickness="1" FontSize="26" Text="{Binding DataInfo}"></TextBox>
+
+
+        <Border Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" BorderThickness="1" Margin="0" CornerRadius="10" BorderBrush="Transparent">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FFF0F0F0" Offset="0.859"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Estado :" Foreground="White" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right"></Label>
+
+                <TextBlock  Text="{Binding UpdateInfo}" Grid.Column="1"  Width="auto"  HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" FontSize="16" Foreground="White" Height="auto" Margin="0,0,0,0" >
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="4"
+                                          Direction="330"
+                                          Color="Black"
+                                          Opacity="0.5"
+                                          BlurRadius="4"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+
+                <MaterialDesign:PackIcon Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"  Kind="Clock"  Margin="0,0,0,0" Foreground="White" 
+                                                 VerticalAlignment="Center" HorizontalAlignment="Left" Width="25" Height="25"/>
+
+                <TextBlock  Text="{Binding StrScanDuration}" Grid.Column="2"  Width="auto"  HorizontalAlignment="Left" 
+                             VerticalAlignment="Center" FontSize="16" Foreground="White" Height="auto" Margin="30,0,0,0" >
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="4"
+                                          Direction="330"
+                                          Color="Black"
+                                          Opacity="0.5"
+                                          BlurRadius="4"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+
+                <!-- HeartBeat, Flashing Orange bar -->
+                <Border Grid.Column="3" Margin="20,5,20,5" Background="#FFFF9750" CornerRadius="10"  Opacity="{Binding ShowMe}">
+                    <Grid  Height="auto" VerticalAlignment="Stretch">
+                        <TextBox Background="Transparent" Text="el funcionamiento" VerticalAlignment="Center" FontSize="16" Foreground="White" Margin="0,0,0,0" BorderThickness="0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </Border>
+
+
+    </Grid>
+</UserControl>

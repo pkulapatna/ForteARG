@@ -1,0 +1,956 @@
+﻿
+
+MaterialDesignThemes in App.xtml
+
+<Application . . .>
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>
+
+
+ <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding ItemChangedCommand}"
+                                                               CommandParameter="{Binding ElementName=MyListBox, Path=SelectedIndex}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+
+
+<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding  Path= SelectedCommand}" 
+							       CommandParameter="{Binding ElementName= MyListBox, Path= SelectedItem}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+
+
+								
+        private void backgroundWorker_DoWork2(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                if (Worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                Worker.ReportProgress(i);
+                Thread.Sleep(iScanTimer);
+                e.Result = 1000;
+            }
+        }
+
+
+		#region WorkerThread
+
+        /// <summary>
+        /// 1. Setup
+        /// </summary>
+        private void Setup_WorkerThread()
+        {
+            if (Worker == null)
+                Worker = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+                };
+
+            Worker.DoWork += backgroundWorker_DoWork;
+            Worker.ProgressChanged += backgroundWorker_ProgressChanged;
+            Worker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+        }
+
+
+        /// <summary>
+        /// 2. Set timer loop
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+           
+            while (!Worker.CancellationPending) 
+            {
+               Thread.Sleep(iScanTimer);
+               Worker.ReportProgress(100); //Report 100%, can be used in the progress bar for 1 to 100 % completed.
+            }
+            e.Cancel = true;
+        }
+
+        /// <summary>
+        /// 3. Start
+        /// </summary>
+        private void Start_WorkerThread()
+        {
+            if (!Worker.IsBusy)
+                Worker.RunWorkerAsync();
+         
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Operation Started"); }));
+        }
+
+       
+        /// <summary>
+        /// 4. Stop worker Thread
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { Worker_Stopped(); }));             
+            }
+            else if (e.Error != null)
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Error in Process :" + e.Error); }));
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Status : Scan timer Completed"); }));    
+            }
+        }
+
+        private void Worker_Stopped()
+        {
+            RTRunning = false;
+            _eventAggregator.GetEvent<UpdatedEvent>().Publish(RTRunning);
+            ShowMe = 0.1;
+            Opac = 1.0;
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Status : Scan timer Stopped"); }));
+        }
+
+
+        /// <summary>
+        /// 5. Timer call do the data pooling here
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() => { GetUpdateData(); }));
+            Application.Current.Dispatcher.Invoke(new Action(() => { Heartbeat(); }));
+          
+        }
+
+
+        #endregion WorkerThread
+
+
+		#region Timer Thread
+
+        private void Start_WorkerThread()
+        {
+            if (!Worker.IsBusy)
+                Worker.RunWorkerAsync();
+            Console.WriteLine("Operation Started");
+            StringStatus = "Status : Scan timer Started";
+        }
+
+        private void Setup_WorkerThread()
+        {
+            Worker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+
+            Worker.DoWork += backgroundWorker_DoWork;
+            Worker.ProgressChanged += backgroundWorker_ProgressChanged;
+            Worker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                Console.WriteLine("Operation Cancelled");
+                StringStatus = "Status : Scan timer Stopped";
+                ShowMe = 0.1;
+            }
+            else if (e.Error != null)
+            {
+                Console.WriteLine("Error in Process :" + e.Error);
+            }
+            else
+            {
+                Console.WriteLine("Operation Completed :" + e.Result);
+                StringStatus = "Status : Scan timer Completed";
+            }
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+            CRealtimeModel.StartProcess();
+            RealTimeDataTable = CRealtimeModel.RealTimeDataTable;
+            UpdateBigNumbers(RealTimeDataTable);
+            StringStatus = "Status : Scan update timer : " + DateTime.Now.ToString();
+
+            if (ShowMe == 0.1) ShowMe = 0.6;
+            else if(ShowMe == 0.6) ShowMe = 0.1;
+
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                if (Worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                Worker.ReportProgress(i);
+                Thread.Sleep(iScanTimer);
+                e.Result = 1000;
+            }
+        }
+
+        #endregion Timer Thread
+		        
+		                
+
+						 private string GetLotArchiveQuery()
+        {
+            string strClause = string.Empty;
+            string strQuantity = string.Empty;
+            string strQueryFields = string.Empty;
+            string strOrder = string.Empty;
+            string strTimeFrame = string.Empty;
+            string strsgls = string.Empty;
+
+            // 1 Occurrences 
+            if (EventValue == "All")
+                strQuantity = "SELECT ";
+            else
+                strQuantity = "SELECT TOP " + RecCount;
+
+            strQueryFields = " * ";
+
+            //4 Old new or all
+            if (EventValue == "Oldest")
+                strOrder = " ORDER BY [Index] ASC;";
+            else
+                strOrder = " ORDER BY [Index] DESC;";
+
+            if (DayChecked)
+            {
+                if (EndDateProp > DateTime.Now)
+                    EndDateProp = DateTime.Now;
+
+                string strStartDate = StartDateProp.Value.Date.ToString("MM/dd/yyyy");
+                string strEndDate = EndDateProp.Value.Date.ToString("MM/dd/yyyy");
+
+                strTimeFrame = " WHERE TimeStart >= '" + strStartDate + "' and TimeStart <= '" + strEndDate + "' ";
+            }
+            else
+            {
+                strTimeFrame = string.Empty;
+            }
+                
+
+            strClause = strQuantity + " " + strQueryFields + " FROM " + SelectLotTableValue + strTimeFrame + strOrder;
+
+            return strClause;
+        }
+
+
+
+		#region Timer (Not used !!!)
+
+        DateTimeOffset startTime;
+        DateTimeOffset lastTime;
+
+        System.Windows.Threading.DispatcherTimer dispatcherTimer;
+
+        private void InitializeTimer()
+        {
+            if (dispatcherTimer == null)
+                dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 2); //Set for 2 Sec.
+        }
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            dispatcherTimer.Stop();
+
+            Application.Current.Dispatcher.Invoke(new Action(() => { GetNewData(); }));
+            Application.Current.Dispatcher.Invoke(new Action(() => { Heartbeat(); }));
+
+            Thread.Sleep(1000); //Rest for 1 Sec.
+
+            dispatcherTimer.Start();
+        }
+
+
+        private void StartTimer()
+        {
+            startTime = DateTimeOffset.Now;
+            lastTime = startTime;
+
+            dispatcherTimer.Start();
+            UpdateStatus("Status : Scan timer Started");
+        }
+
+        private void StopTimer()
+        {
+            dispatcherTimer.Stop();
+            Worker_Stopped();
+        }
+
+        private void Worker_Stopped()
+        {
+            RTRunning = false;
+            _eventAggregator.GetEvent<UpdatedEvent>().Publish(RTRunning);
+            ShowMe = 0.1;
+            Opac = 1.0;
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Status : Scan timer Stopped"); }));
+        }
+
+        #endregion timer
+
+
+		 #region Timer
+
+        System.Windows.Threading.DispatcherTimer dispatcherTimer;
+
+        private void InitializeTimer()
+        {
+            if(dispatcherTimer == null)
+                dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
+        }
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            dispatcherTimer.Stop();   
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateRealTimeData(); }));
+            Thread.Sleep(1000); //Rest for 1 Sec.
+
+            dispatcherTimer.Start();
+        }
+        private void StartTimer()
+        {
+            dispatcherTimer.Start();
+        }
+        private void StopTimer()
+        {
+            dispatcherTimer.Stop();      
+        }
+
+#endregion timer
+
+
+ #region System.Timers.Timer ////////////////////////////////////////////////////////////////////////////////
+
+        DateTimeOffset startTime;
+        DateTimeOffset lastTime;
+
+        /// <summary>
+        /// System.Timers.Timer 
+        /// an asynchronous timer
+        /// </summary>
+        private void initRtTimer()
+        {
+            if (RtScanTimer != null) RtScanTimer.Dispose();
+            RtScanTimer = new System.Timers.Timer(Settings.Default.iScanRate); //5000 or 5 Sec.
+            RtScanTimer.Elapsed += OnTimedEvent;
+            RtScanTimer.AutoReset = true;
+        }
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            RtScanTimer.Enabled = false;
+            Application.Current.Dispatcher.Invoke(new Action(() => { GetUpdateData(); }));
+            Application.Current.Dispatcher.Invoke(new Action(() => { Heartbeat(); }));
+            Thread.Sleep(1000); //Rest for 1 Sec.
+            StartRtTimer();
+        }
+        private void StartRtTimer()
+        {
+            startTime = DateTimeOffset.Now;
+            lastTime = startTime;
+
+            initRtTimer();
+            RtScanTimer.Enabled = true;
+        }
+        private void StopRtTimer()
+        {
+            RtScanTimer.Stop();
+            RtScanTimer.Enabled = false;
+            if (RtScanTimer != null) RtScanTimer.Dispose();
+            RTRunning = false;
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateStatus("Status : Scan timer Stopped"); }));
+            _eventAggregator.GetEvent<UpdatedEvent>().Publish(RTRunning);
+            ShowMe = 0.1;
+            Opac = 1.0;
+        }
+
+        #endregion System.Timers.Timer //////////////////////////////////////////////////////////////////////////////
+
+
+
+		 #region System.Timers.Timer ////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// System.Timers.Timer 
+        /// an asynchronous timer
+        /// a new thread is created for the timer
+        /// Things to Remember
+        /// 1. Runs in a new thread always
+        /// 2. Explcit call to period is required.
+        /// 3. You can use Change method to change the properties after the Timer is invoked.
+        /// 4. Class does not support inheritance 
+        /// 5. Purely used for numerical timing, where UI update is not or very less required.
+        /// </summary>
+        private void initRtTimer()
+        {
+            if (RtScanTimer != null) RtScanTimer.Dispose();
+            RtScanTimer = new System.Timers.Timer(Settings.Default.iScanRate); //5000 or 5 Sec.
+            RtScanTimer.Elapsed += OnTimedEvent;
+            RtScanTimer.AutoReset = true;
+        }
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            RtScanTimer.Enabled = false;
+            Application.Current.Dispatcher.Invoke(new Action(() => { UpdateRealTimeData(); }));
+            Thread.Sleep(1000); //Rest for 1 Sec
+            StartRtTimer();
+        }
+        private void StartRtTimer()
+        {
+            initRtTimer();
+            RtScanTimer.Enabled = true;
+        }
+        private void StopRtTimer()
+        {
+            RtScanTimer.Stop();
+            RtScanTimer.Enabled = false;
+            if (RtScanTimer != null) RtScanTimer.Dispose();
+            ShowMe = 0.1;
+        }
+
+        #endregion System.Timers.Timer //////////////////////////////////////////////////////////////////////////////
+
+
+		XXX Old text box for timer scan rate
+
+		<TextBox Grid.Column="0" Grid.Row="2" Width="70" IsReadOnly="False" IsEnabled="{Binding BModify}"
+                                     Text="{Binding ScanRate, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalAlignment="Right" Background="AntiqueWhite" PreviewTextInput="NumericOnly"/>
+
+
+
+									 //  printDlg.PageRangeSelection = PageRangeSelection.AllPages;
+            //  printDlg.UserPageRangeEnabled = true;
+            // printDlg.PrintTicket.PageScalingFactor = 50;
+
+
+
+            
+            //get selected printer capabilities
+            System.Printing.PrintCapabilities capabilities = printDlg.PrintQueue.GetPrintCapabilities(printDlg.PrintTicket);
+
+            //get scale of the print wrt to screen of WPF visual
+            double scale = Math.Min(capabilities.PageImageableArea.ExtentWidth / _PrintGrid.ActualWidth, capabilities.PageImageableArea.ExtentHeight /
+                                                                                                                                this.ActualHeight);
+            //Transform the Visual to scale
+            this.LayoutTransform = new ScaleTransform(scale, scale);
+
+            //get the size of the printer page
+            Size sz = new Size(capabilities.PageImageableArea.ExtentWidth, capabilities.PageImageableArea.ExtentHeight);
+
+            _PrintGrid.Measure(sz);
+            _PrintGrid.Arrange(new Rect(new Point(capabilities.PageImageableArea.OriginWidth, capabilities.PageImageableArea.OriginHeight), sz));
+
+
+			PrintDialog printDlg = new PrintDialog();
+            
+   
+            printDlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
+
+
+
+
+            if (printDlg.ShowDialog() == true)
+            {
+                _PrintGrid.Arrange(new Rect(new Point(0, 0), new Size(1190, 720)));
+
+                printDlg.PrintVisual(_PrintGrid, "My Canvas");
+            }
+               
+            printDlg = null;
+
+
+			  double xMargin = 10;
+            double yMargin = 10;
+
+            PrintDialog printDlg = new PrintDialog();
+            PrintTicket pt = printDlg.PrintTicket;
+            Double printableWidth = pt.PageMediaSize.Width.Value;
+            Double printableHeight = pt.PageMediaSize.Height.Value;
+
+            Double xScale = (printableWidth - xMargin * 2) / printableWidth;
+            Double yScale = (printableHeight - yMargin * 2) / printableHeight;
+
+            _PrintGrid.LayoutTransform = new MatrixTransform(xScale, 0, 0, yScale, xMargin, yMargin);
+
+
+
+			////////////////////////// From clsSqlConfigModel //////////////////////////////////////////////////
+
+
+			/// <summary>
+        /// Condition   1. Local
+        ///             2. Remote
+        /// </summary>
+        public void CheckNetwork()
+        {
+            bool bNetwork = false;
+            bool bRemhost = false;
+
+            //1 network 
+            //2. RemoteServer
+
+            LocalWorkStationID = Settings.Default.LocalHost;
+
+            //Network?
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                Console.WriteLine("No Network Available!");
+                bNetwork = false;
+            }
+            else     
+                bNetwork = true;
+           
+            //Host?
+            if (!PingNetwork(Settings.Default.Host))
+            {
+                Console.WriteLine("Network not Available or No Remote Host on the Network!");
+                bRemhost = false;
+            }
+            else
+                bRemhost = true;
+
+            /*
+            if((bNetwork) && (bRemhost))
+            {
+                Settings.Default.BSerRemote = true;
+                TargetWorkStationID = Settings.Default.RemoteServer; 
+            }
+            else
+            {
+                Settings.Default.BSerRemote = false;
+                //Run Local
+                TargetWorkStationID = LocalWorkStationID;
+            }
+
+    
+            Settings.Default.Save();
+            */
+         
+        }
+
+  
+        /// <summary>
+        /// Run Remote required Network connections
+        /// return true find remote host on the network
+        /// return false no network found!
+        /// </summary>
+        private bool SetupNetwork()
+        {
+            bool bAok = false;
+
+            try
+            {
+                //Network?
+                if(!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                {
+                    Console.WriteLine("No Network Available!");
+                    bAok = false;
+                }
+                else // try to find the Default.Host on the network. 
+                {
+                    TargetWorkStationID = Settings.Default.Host;
+                    if (!PingNetwork(Settings.Default.Host))
+                    {
+                        Console.WriteLine("No Remote Host on the Network!");
+                    }
+                    else
+                        bAok = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in SetupNetwork" + ex.Message) ;
+            }
+            return bAok;
+        }
+
+        private bool PingNetwork(string strHost)
+        {
+            bool bNetwork = false;
+            try
+            {
+                System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
+
+                if (p.Send(strHost, 500).Status == System.Net.NetworkInformation.IPStatus.Success)
+                    bNetwork = true;
+                else
+                    bNetwork = false;
+            }
+            catch (Exception ex)
+            {
+                MainWindow.AppWindows.LogObject.LogMessage(MsgTypes.WARNING, MsgSources.NETWORKACESS, ex.Message );
+            }
+            return bNetwork;
+        }
+
+
+
+
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			<ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Headers}">
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="Background" Value="Yellow" />
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+
+                        </GridViewColumn>
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position1}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position2}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position3}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position4}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position5}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position6}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position7}" />
+                        <GridViewColumn Header="Bposition" Width="100" DisplayMemberBinding="{Binding Position8}" />
+
+                    </GridView>
+                </ListView.View>
+
+
+				/// <summary>
+        /// 
+        /// </summary>
+        private void GetNewData2()
+        {
+          
+            int iFirstBale = 0;
+   
+            InitGraph();
+            DataTable SingleDataTable = null;
+
+            string strGetIndex = "Select Top 1 [index] FROM dbo.[" +
+                                       DropModel.m_CurrentBaleTable +
+                                       "] WHERE LineId = " +
+                                       LineSelected + //intLineID.ToString() +
+                                       " ORDER BY [TimeStart] DESC; ";
+
+            strQuerySample = "SELECT Top " +
+                               IntColSamples.ToString() +
+                               " Position, Weight, Forte, Moisture, UpCount, DownCount, DropNumber, NetWeight, BDWeight, BasisWeight, DropNumber,[Index] FROM dbo.[" +
+                                DropModel.m_CurrentBaleTable +
+                                "] WHERE LineId = " +
+                                 LineSelected + //intLineID.ToString() +
+                                " AND Position > 0 ORDER BY [TimeStart] DESC;";
+
+            string strGetSingleNewData = "Select Top 1 " +
+                                " Position, Weight, Forte, Moisture, UpCount, DownCount, DropNumber, NetWeight, BDWeight, BasisWeight, LotBaleNumber,SerialNumber,DropNumber,[Index] FROM dbo.[" +
+                                 DropModel.m_CurrentBaleTable +
+                                 "] WHERE LineId = " +
+                                  LineSelected + //intLineID.ToString() +
+                                 " And Position > 0 ORDER BY [TimeStart] DESC;";
+            try
+            {
+                SingleDataTable = new DataTable();
+                SingleDataTable = DropModel.GetNewDataTable(strGetSingleNewData);
+
+                BalePosition = Convert.ToInt32(SingleDataTable.Rows[0]["Position"].ToString());
+                double dMoise = Convert.ToDouble(SingleDataTable.Rows[0]["Moisture"].ToString());
+                BaleMoisture = dMoise.ToString("#0.00");
+                double dWeight = Convert.ToDouble(SingleDataTable.Rows[0]["Weight"].ToString());
+                BaleWeight = dWeight.ToString("#0.00");
+                BaleLotNumber = SingleDataTable.Rows[0]["LotBaleNumber"].ToString();
+                BaleSerialNumber = SingleDataTable.Rows[0]["SerialNumber"].ToString();
+
+                // Take data when the last bale of the drop arrived!
+                if(bHitoLow)
+                    iFirstBale = 1;
+                else
+                    iFirstBale = BalesInOneDrop;
+                
+
+                if (BalePosition == iFirstBale)
+                {
+                    Mydatatable.Clear();
+                    CurIndex = DropModel.GetNewItemData(strGetIndex);
+
+                    if (CurIndex != PreIndex) // not for the same bale!
+                    {
+                        string newquery = BuildQueryString();
+                        Mydatatable = DropModel.GetNewDataTable(newquery);
+                        ProcessData_Live(Mydatatable);                     
+                        GetNewDataGridview(Mydatatable);
+                        PreIndex = CurIndex;
+                        UpdateInfo = "New Drop Data arrived at " + DateTime.Now;
+                    }
+                }
+            }
+            catch (Exception ex )
+            {
+                MessageBox.Show("Error in ViewModel GetNewData " + ex.Message);    
+            }
+        }
+
+
+
+		  private void GetNewData2()
+        {
+            int iLastBale = 0;
+            string strQueryString = string.Empty;
+
+            m_CurrentBaleTable = DropGraphModel.m_CurrentBaleTable;
+            m_PreviousTable = DropGraphModel.GetPreviousTable();
+            Settings.Default.iBalesInDrop.ToString();
+
+            string StrQuery = "SELECT Top 1 Position FROM dbo.[" +
+                                m_CurrentBaleTable + "] WHERE LineID = " +
+                                LineSelected.ToString() +
+                                " ORDER BY [TimeStart] DESC; ";
+
+            int iBalePos = DropGraphModel.GetNewItemData(StrQuery);
+            balePosition = iBalePos.ToString() + "   -> Scan timer Update @ : " + DateTime.Now;
+
+            //Get New Data when last bale in drop arrived
+            if (Settings.Default.bDropHitoLow)
+                iLastBale = 1;
+            else
+                iLastBale = Settings.Default.iBalesInDrop;
+
+            if (iBalePos == iLastBale)
+            {
+                strQueryString = "SELECT Top " + IntColSamples +
+                            " Position,Weight,Forte,Moisture,UpCount,DownCount,DropNumber,[index] FROM dbo.[" +
+                            m_CurrentBaleTable +
+                            "] WHERE LineID =" +
+                            LineSelected.ToString() +
+                            " AND Position > 0 ORDER BY [TimeStart] DESC;";
+
+                Mydatatable = SqlModel.GetMoistureDataTable(strQueryString);
+                CurIndex = Convert.ToInt32(Mydatatable.Rows[0]["index"]);
+
+                if (CurIndex != PreIndex)
+                {
+                    ProcessData(Mydatatable, strSelectedItem);
+                    PreIndex = CurIndex;
+                }
+            }
+        }
+
+
+		 public class Clock
+    {
+
+        private readonly System.Timers.Timer _timer = new System.Timers.Timer(30000); // 30 Sec. 
+        public event EventHandler NewDay;
+        public string TimeNow { get; set; }
+
+        public Clock()
+        {
+            _timer.Elapsed += Timer_Elapsed;
+        }
+
+        public void StartTimer()
+        {
+            _timer.Start();
+        }
+
+        public void StopTimer()
+        {
+            _timer.Stop();
+        }
+
+        /// <summary>
+        /// Triggers by Readtime date from sql table.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            TimeNow = DateTime.Now.ToString("HH:mm");
+            if(Settings.Default.WLDayEndTime == TimeNow)
+            {
+                if (NewDay != null) NewDay(this, EventArgs.Empty);
+            }
+           
+        }
+    }
+
+	SplashScreen splashScreen = new SplashScreen("SplashScreenImage.bmp");
+	splashScreen.Show(true);
+
+// Run the application.
+
+
+for Histrogram 
+ var items = new[] { 5, 6, 1, 2, 3, 1, 5, 2 };
+                items
+                    .GroupBy(i => i)
+                    .Select(g => new {
+                        Item = g.Key,
+                        Count = g.Count()
+                    })
+                    .OrderBy(g => g.Item)
+                    .ToList()
+                    .ForEach(g => {
+                        Console.WriteLine("{0} occurred {1} times", g.Item, g.Count);
+                    });
+
+
+------
+
+Func<int, int> multiplyByFive = num => num * 5;
+// Returns 35
+int result = multiplyByFive(7);
+
+------
+
+ Student[] studentArray = { 
+                    new Student() { StudentID = 1, StudentName = "John", age = 18 } ,
+                    new Student() { StudentID = 2, StudentName = "Steve",  age = 21 } ,
+                    new Student() { StudentID = 3, StudentName = "Bill",  age = 25 } ,
+                    new Student() { StudentID = 4, StudentName = "Ram" , age = 20 } ,
+                    new Student() { StudentID = 5, StudentName = "Ron" , age = 31 } ,
+                    new Student() { StudentID = 6, StudentName = "Chris",  age = 17 } ,
+                    new Student() { StudentID = 7, StudentName = "Rob",age = 19  } ,
+                };
+
+// Use LINQ to find teenager students
+        Student[] teenAgerStudents = studentArray.Where(s => s.age > 12 && s.age < 20).ToArray();
+       
+        // Use LINQ to find first student whose name is Bill 
+        Student bill = studentArray.Where(s => s.StudentName == "Bill").FirstOrDefault();
+        
+        // Use LINQ to find student whose StudentID is 5
+        Student student5 = studentArray.Where(s => s.StudentID == 5).FirstOrDefault();
+		
+-------
+
+
+// string collection
+IList<string> stringList = new List<string>() { 
+    "C# Tutorials",
+    "VB.NET Tutorials",
+    "Learn C++",
+    "MVC Tutorials" ,
+    "Java" 
+};
+
+// LINQ Query Syntax
+var result = stringList.Where(s => s.Contains("Tutorials"));
+
+-----------
+  not use
+  /// <summary>
+        /// Select check items from AvailableItemListModel
+        /// in SelectedHdrListModel
+        /// </summary>
+        public void SetSelectedItemList_Checkbox()
+        {    
+            XmlColumnList.Clear();
+
+            HdrTable = new DataTable();
+            HdrTable = SqlConfigModel.GetSqlScema();
+    
+            XmlColumnList.Clear();
+            XmlColumnList = MyXml.ReadXmlGridView(MyXml.SettingsGdvFile);
+
+            AvailableItemList.Clear();
+            if (XmlColumnList.Count > 0)
+            {
+               foreach(DataRow item in HdrTable.Rows)
+                {
+                   if (AllowField(item[1].ToString()))
+                    {
+                        if (XmlColumnList.Contains(item[1].ToString()))
+                            AvailableItemList.Add(new CheckedListItem(Convert.ToInt32(item[0]), item[1].ToString(), true, item[2].ToString()));
+                         else
+                            AvailableItemList.Add(new CheckedListItem(Convert.ToInt32(item[0]), item[1].ToString(), false, item[2].ToString()));
+                    }
+                }
+            }
+
+            SelectedHdrListModel.Clear();
+            foreach ( var item in XmlColumnList)
+            {
+                SelectedHdrListModel.Add(item);
+            }
+        }
+
+		 public ObservableCollection<string> UpdateSelectedItem()
+        {
+            ObservableCollection<string> mylist = new ObservableCollection<string>();
+            NewHrdXmlList.Clear();
+
+            for ( int i = 0; i < AvailableItemList.Count; i++ )
+            {
+                if (AvailableItemList[i].IsChecked)
+                {
+                    mylist.Add(AvailableItemList[i].Name);
+                    NewHrdXmlList.Add(AvailableItemList[i].Name);
+                }
+            }
+            return mylist;
+        }
+
+
+		
+        public void UpdateHeaderList(ObservableCollection<string> newlist)
+        {
+            HdrDropDownList = new List<string>(newlist);
+            m_strQueryString = BuildQueryString(HdrDropDownList);
+        }
+
+       
+
+
+---------------------------- For WetLayer graphics
+
+<LinearGradientBrush x:Key="NormalBrush" EndPoint="1,0" StartPoint="0,0">
+        <GradientStop Color="Green" Offset="0.0"/>
+        <GradientStop Color="YellowGreen" Offset="{Binding OnTargetColourChange}"/>
+        <GradientStop Color="Yellow" Offset="{Binding OnTargetColourChange}"/>
+        <GradientStop Color="White" Offset="{Binding OnTargetMiddleColourChange}"/>
+        <GradientStop Color="Yellow" Offset="{Binding OverDryColourChange}"/>
+        <GradientStop Color="Orange" Offset="{Binding OverDryColourChange}"/>
+        <GradientStop Color="Red" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="NormalBrush2" EndPoint="1,0" StartPoint="0,0">
+        <GradientStop Color="Green" Offset="0.0"/>
+        <GradientStop Color="YellowGreen" Offset="{Binding OnTargetColourChange}"/>
+        <GradientStop Color="Yellow" Offset="{Binding OnTargetColourChange}"/>
+        <GradientStop Color="White" Offset="{Binding OnTargetMiddleColourChange}"/>
+        <GradientStop Color="Yellow" Offset="{Binding OverDryColourChange}"/>
+        <GradientStop Color="Orange" Offset="{Binding OverDryColourChange}"/>
+        <GradientStop Color="Red" Offset="1.0"/>
+    </LinearGradientBrush>

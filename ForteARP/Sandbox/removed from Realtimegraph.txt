@@ -1,0 +1,85 @@
+﻿<chartingToolkit:LineSeries x:Name="ChrtSer7" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value" 
+                                            ToolTip="Drop Position 7"
+                                            ItemsSource="{Binding Path=_Position7}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="Gold"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries x:Name="ChrtSer8" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value"
+                                            ToolTip="Drop Position 8"
+                                            ItemsSource="{Binding Path=_Position8}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries x:Name="ChrtSer9" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value" 
+                                            ToolTip="Drop Position 9"
+                                            ItemsSource="{Binding Path=_Position9}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="Aquamarine"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries x:Name="ChrtSer10" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value"
+                                            ToolTip="Drop Position 10"
+                                            ItemsSource="{Binding Path=_Position10}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="Salmon"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries x:Name="ChrtSer11" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value" 
+                                            ToolTip="Drop Position 11"
+                                            ItemsSource="{Binding Path=_Position11}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="SeaGreen"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries x:Name="ChrtSer12" 
+                                            DependentValuePath="Key" 
+                                            IndependentValuePath="Value"
+                                            ToolTip="Drop Position 12"
+                                            ItemsSource="{Binding Path=_Position12}">
+
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="{x:Type chartingToolkit:LineDataPoint}">
+                            <Setter Property="Background" Value="Coral"/>
+                            <Setter Property="Template" Value="{x:Null}" />
+                            <Setter Property="ToolTip" Value="Coral"/>
+
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
