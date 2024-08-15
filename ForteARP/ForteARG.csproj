@@ -70,8 +70,9 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ButtonClass">
-      <HintPath>..\..\..\..\LibraryResource\UserControls\ButtonClass\bin\Release\ButtonClass.dll</HintPath>
+    <Reference Include="ButtonClass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CustomReference\ButtonClass.dll</HintPath>
     </Reference>
     <Reference Include="CircularProgressBar, Version=2.8.0.16, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
       <HintPath>..\packages\CircularProgressBar.2.8.0.16\lib\net40\CircularProgressBar.dll</HintPath>
@@ -571,6 +572,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CustomReference\ButtonClass.dll" />
     <Content Include="CustomReference\QurtzLibrary.dll" />
     <Content Include="CustomReference\System.Windows.Controls.DataVisualization.Toolkit.dll" />
     <Content Include="CustomReference\System.Windows.Interactivity.dll" />
