@@ -165,7 +165,7 @@
     </Reference>
     <Reference Include="WpfArchive.Windows.Theme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ForteDataVisualization\ForteVisualData\CustomReference\WpfArchive.Windows.Theme.dll</HintPath>
+      <HintPath>..\..\WpfArchive.Windows.Theme\bin\Release\WpfArchive.Windows.Theme.dll</HintPath>
     </Reference>
     <Reference Include="WpfLanguageResource, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
